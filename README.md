@@ -1,4 +1,4 @@
-Sponge [![Build Status](https://travis-ci.org/SpongePowered/Sponge.svg?branch=master)](https://travis-ci.org/SpongePowered/Sponge)
+Sponge [![Build Status](https://ci.spongeproject.org/app/rest/builds/buildType:(id:Sponge_Sponge)/statusIcon)](https://ci.spongeproject.org/viewType.html?buildTypeId=Sponge_Sponge)
 =============
 
 **Currently not stable and under heavy development!**
