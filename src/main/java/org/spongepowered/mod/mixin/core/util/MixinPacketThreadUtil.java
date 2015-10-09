@@ -43,7 +43,7 @@ public class MixinPacketThreadUtil {
         if (netHandler instanceof NetHandlerPlayServer) {
             StaticMixinHelper.processingPlayer = ((NetHandlerPlayServer)netHandler).playerEntity;
             packetIn.processPacket(netHandler);
-            ((IMixinWorld)StaticMixinHelper.processingPlayer.worldObj).handlePostTickCaptures(Cause.of(StaticMixinHelper.processingPlayer, "PacketThreadUtil"));
+            ((IMixinWorld)StaticMixinHelper.processingPlayer.worldObj).handlePostTickCaptures(Cause.of(StaticMixinHelper.processingPlayer));
             StaticMixinHelper.processingPlayer = null;
         } else { // client
             packetIn.processPacket(netHandler);

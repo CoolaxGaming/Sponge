@@ -135,7 +135,7 @@ public class SpongeForgeEventFactory {
                 return createBlockNeighborNotifyEvent(event);
             }
             else if (clazz == BlockEvent.HarvestDropsEvent.class) {
-                return createBlockHarvestEvent(event);
+                //return createBlockHarvestEvent(event);
             } else if (clazz == BlockEvent.BreakEvent.class) {
                 return createBlockBreakEvent(event);
             } else if (clazz == BlockEvent.MultiPlaceEvent.class ||
@@ -353,26 +353,6 @@ public class SpongeForgeEventFactory {
         BlockEvent.BreakEvent forgeEvent =
                 new BlockEvent.BreakEvent(world, pos, world.getBlockState(pos),
                         (EntityPlayer) player.get());
-        return forgeEvent;
-    }
-
-    public static BlockEvent.HarvestDropsEvent createBlockHarvestEvent(Event event) {
-        if (!(event instanceof DropItemEvent.Harvest)) {
-            throw new IllegalArgumentException("Event is not a valid DropItemEvent.Harvest.");
-        }
-
-        DropItemEvent.Harvest spongeEvent = (DropItemEvent.Harvest) event;
-        List<net.minecraft.item.ItemStack> droppedItems = new ArrayList<net.minecraft.item.ItemStack>();
-        for (ItemStackSnapshot itemstack : spongeEvent.getDroppedItems()) {
-            droppedItems.add((net.minecraft.item.ItemStack) itemstack);
-        }
-        Optional<Player> player = spongeEvent.getCause().first(Player.class);
-        Optional<BlockSnapshot> blockSnapshot = spongeEvent.getCause().first(BlockSnapshot.class);
-
-        Location<World> location = blockSnapshot.get().getLocation().get();
-        BlockEvent.HarvestDropsEvent forgeEvent =
-                new BlockEvent.HarvestDropsEvent((net.minecraft.world.World) location.getExtent(), VecHelper.toBlockPos(location.getPosition()), (IBlockState) location.getBlock(), 0,
-                        spongeEvent.getDropChance(), droppedItems, player.isPresent() ? (EntityPlayer) player.get() : null, false);// spongeEvent.isSilkTouchHarvest());
         return forgeEvent;
     }
 

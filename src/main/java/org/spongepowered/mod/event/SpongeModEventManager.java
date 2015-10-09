@@ -110,7 +110,7 @@ public class SpongeModEventManager extends SpongeEventManager {
                     .put(DestructEntityEvent.Death.class, LivingDeathEvent.class)
                     .put(ChangeBlockEvent.Break.class, BlockEvent.BreakEvent.class)
                     .put(MessageSinkEvent.class, ServerChatEvent.class)
-                    .put(DropItemEvent.Harvest.class, BlockEvent.HarvestDropsEvent.class)
+                    //.put(DropItemEvent.Harvest.class, BlockEvent.HarvestDropsEvent.class)
                     .put(InteractBlockEvent.class, PlayerInteractEvent.class)
                     .put(InteractEntityEvent.Secondary.class, EntityInteractEvent.class)
                     .put(ChangeBlockEvent.Place.class, BlockEvent.PlaceEvent.class)

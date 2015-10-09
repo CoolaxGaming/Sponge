@@ -106,10 +106,12 @@ public abstract class MixinChunk implements Chunk, IMixinChunk{
     @Redirect(method = "populateChunk", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/chunk/IChunkProvider;populate(Lnet/minecraft/world/chunk/IChunkProvider;II)V"))
     public void onPopulateChunkPre(IChunkProvider chunkProviderServer, IChunkProvider chunkProvider, int x, int z) {
         IMixinWorld world = (IMixinWorld) this.worldObj;
+        world.setProcessingCaptureCause(true);
         world.setCapturingTerrainGen(true);
         chunkProviderServer.populate(chunkProvider, x, z);
         world.handlePostTickCaptures(Cause.of(this, chunkProvider));
         world.setCapturingTerrainGen(false);
+        world.setProcessingCaptureCause(false);
     }
 
     @Override
@@ -142,12 +144,24 @@ public abstract class MixinChunk implements Chunk, IMixinChunk{
             int index = this.trackedIntBlockPositions.get(blockPosToInt(pos));
             Optional<UUID> uuid = (((IMixinWorldInfo) this.worldObj.getWorldInfo()).getUniqueIdForIndex(index));
             if (uuid.isPresent()) {
+                // get player if online
+                EntityPlayer player = this.worldObj.getPlayerEntityByUUID(uuid.get());
+                if (player != null) {
+                    return Optional.of((User)player);
+                }
+                // player is not online, get user from storage if one exists
                 return Sponge.getGame().getServiceManager().provide(UserStorage.class).get().get(uuid.get());
             }
         } else if (this.trackedShortBlockPositions.get(blockPosToShort(pos)) != null) {
             int index = this.trackedShortBlockPositions.get(blockPosToShort(pos));
             Optional<UUID> uuid = (((IMixinWorldInfo) this.worldObj.getWorldInfo()).getUniqueIdForIndex(index));
             if (uuid.isPresent()) {
+                // get player if online
+                EntityPlayer player = this.worldObj.getPlayerEntityByUUID(uuid.get());
+                if (player != null) {
+                    return Optional.of((User)player);
+                }
+                // player is not online, get user from storage if one exists
                 return Sponge.getGame().getServiceManager().provide(UserStorage.class).get().get(uuid.get());
             }
         }
